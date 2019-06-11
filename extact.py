@@ -1,14 +1,15 @@
 import cv2
 import numpy as np
-
+from PIL import Image
+import pytesseract
 # Read the image and create a blank mask
-img = cv2.imread('/home/caratred/copy/passport/AILEEN_MAUNAHAN_438.jpeg')
+img = cv2.imread('/home/caratred/Downloads/images/drivingcrop/85.JPG')
 h,w = img.shape[:2]
 mask = np.zeros((h,w), np.uint8)
 
 # Transform to gray colorspace and invert Otsu threshold the image
 gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-_, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+_, thresh = cv2.threshold(gray,255,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
 
 # ***OPTIONAL FOR THIS IMAGE
 
@@ -43,19 +44,21 @@ cnt = max(contours, key=cv2.contourArea)
 #print("lsnnkgfnksdr:",cnt)
 #cv2.imwrite("/home/caratred/noisy.jpeg",cnt)
 # Draw it on the new mask and perform a bitwise operation again
-cv2.drawContours(mask, [cnt], 0, 255, -1)
+cv2.drawContours(mask, [cnt], 0, 0, 255)
 res = cv2.bitwise_and(img, img, mask=mask)
 
 # If you will use pytesseract it is wise to make an aditional white border
 # so that the letters arent on the borders
 x,y,w,h = cv2.boundingRect(cnt)
-cv2.rectangle(res,(x,y),(x+w,y+h),(255,255,255),1)
+cv2.rectangle(res,(x,y),(x+w,y+h),(255,0,255),1)
 
 # Crop the result
 final_image = res[y:y+h+1, x:x+w+1]
 
 # Display the result
 cv2.imshow('img', final_image)
-cv2.imwrite("/home/caratred/ss.jpg",final_image)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+cv2.imwrite("/home/caratred/ss.jpeg",final_image)
+text = pytesseract.image_to_string(Image.open('/home/caratred/ss.jpeg'))
+print(".....text....:",text)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()

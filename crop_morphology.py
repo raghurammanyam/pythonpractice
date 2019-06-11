@@ -222,7 +222,7 @@ def downscale_image(im, max_dim=2048):
 
 
 def process_image(path, out_path):
-
+    print(path)
     orig_im = Image.open(path)
     scale, im = downscale_image(orig_im)
 
@@ -272,11 +272,11 @@ def process_image(path, out_path):
     text_im.save(out_path)
     print('%s -> %s' % (path, out_path))
 
+process_image('/home/caratred/17:30:44.037626document.jpeg','/home/caratred/modifiedjpeg.jpeg')
 
-
-for root, dirs, files in os.walk("/home/caratred/Downloads/test/aadhardeskew"):
-         for filename in files:
-             process_image(root+"/"+filename,'/home/caratred/Downloads/test/aadharskewcrop/'+filename)
+# for root, dirs, files in os.walk("/home/caratred/Downloads/images/drivingskew"):
+#          for filename in files:
+#              process_image(root+"/"+filename,'/home/caratred/Downloads/images/skewcrop/'+filename)
 
 
 # if __name__ == '__main__':

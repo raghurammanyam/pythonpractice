@@ -1,19 +1,20 @@
 import cv2
-
+from PIL import Image
+import pytesseract
 
 def captch_ex(file_name):
     img = cv2.imread(file_name)
     img_final = cv2.imread(file_name)
     img2gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    ret, mask = cv2.threshold(img2gray, 180, 255, cv2.THRESH_BINARY)
+    ret, mask = cv2.threshold(img2gray, 255, 0, cv2.THRESH_BINARY)
     image_final = cv2.bitwise_and(img2gray, img2gray, mask=mask)
-    ret, new_img = cv2.threshold(image_final, 180, 255, cv2.THRESH_BINARY)  # for black text , cv.THRESH_BINARY_INV
+    ret, new_img = cv2.threshold(image_final, 255, 0, cv2.THRESH_BINARY)  # for black text , cv.THRESH_BINARY_INV
     '''
-            line  8 to 12  : Remove noisy portion 
+            line  8 to 12  : Remove noisy portion
     '''
     kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3,
                                                          3))  # to manipulate the orientation of dilution , large x means horizonatally dilating  more, large y means vertically dilating more
-    dilated = cv2.dilate(new_img, kernel, iterations=9)  # dilate , more the iteration more the dilation
+    dilated = cv2.dilate(new_img, kernel, iterations=65)  # dilate , more the iteration more the dilation
 
     # for cv2.x.x
 
@@ -21,7 +22,7 @@ def captch_ex(file_name):
 
     # for cv3.x.x comment above line and uncomment line below
 
-    #image, contours, hierarchy = cv2.findContours(dilated,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
+#    image, contours, hierarchy = cv2.findContours(dilated,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
 
 
     for contour in contours:
@@ -29,24 +30,30 @@ def captch_ex(file_name):
         [x, y, w, h] = cv2.boundingRect(contour)
 
         # Don't plot small false positives that aren't text
-        if w < 35 and h < 35:
+        if w < 75 and h < 75:
             continue
 
         # draw rectangle around contour on original image
         cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 255), 2)
 
-        '''
+        # '''
         #you can crop image and send to OCR  , false detected will return no text :)
         cropped = img_final[y :y +  h , x : x + w]
 
-        s = file_name + '/crop_' + str(index) + '.jpg' 
-        cv2.imwrite(s , cropped)
+        s = file_name + '/crop_' + str(index) + '.jpg'
+        #print(s)
+        cv2.imwrite('/home/caratred/abcimg.jpeg', cropped)
+        text = pytesseract.image_to_string(Image.open('/home/caratred/abcimg.jpeg'))
+        print(".....text....:",text)
         index = index + 1
-
-        '''
+        #
+        # '''
     # write original image with added contours to disk
-    cv2.imshow('captcha_result', img)
-    cv2.waitKey()
+    #cv2.imshow('captcha_result', img)
+    cv2.imwrite('/home/caratred/downloadimg.jpeg',img)
+    text = pytesseract.image_to_string(Image.open('/home/caratred/downloadimg.jpeg'))
+    print(".....text....:",text)
+    #cv2.waitKey()
 
 
-captch_ex("/home/caratred/copy/passport/AKITO_SEKIGUCHI_521.jpeg")
+captch_ex("/home/caratred/Downloads/images/drivingcrop/84.JPG")
