@@ -32,7 +32,7 @@ def detect_text():
     ],
     "image": {
         "source": {
-        "imageUri": "http://i3.kym-cdn.com/photos/images/facebook/000/242/592/1c8.jpg"
+        "imageUri": "https://www.pyimagesearch.com/wp-content/uploads/2015/11/mrz_blackhat.jpg"
         }
     }
     }
@@ -40,8 +40,9 @@ def detect_text():
     }
 
 #print("sjdfbgjdfbsgkvdfk",respone_face)
-    response = requests.post(url, headers=header, json=body)
-    print(response.__dict__)
+    response = requests.post(url, headers=header, json=body).json()
+    # print(response.__dict__)
+    print(response['responses'][0])
     text = response['responses'][0]['textAnnotations'][0]['description'] if len(response['responses'][0]) > 0 else ''
     print("text:",text)
 detect_text()

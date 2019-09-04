@@ -16,7 +16,7 @@ def send(mail_id):
    FROM = gmail_user
    recipient = mail_id
    TO = recipient if type(recipient) is list else [recipient]
-   SUBJECT = 'User Registration'
+   SUBJECT = 'alpha Registration'
    TEXT = 'succesfully registered as a user in our app'
    message = """From: %s\nTo: %s\nSubject: %s\n\n%s
    """% (FROM, ", ".join(TO), SUBJECT, TEXT)

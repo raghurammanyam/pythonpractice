@@ -15,22 +15,22 @@ from difflib import get_close_matches
 import tempfile
 import cv2
 from os.path import join
-import pycountry
+#import pycountry
 import csv
 import pandas as pd
 import codecs
 import pandas as pd
-import xlrd as xl
-from pandas import ExcelWriter
-from pandas import ExcelFile
-from xlrd import open_workbook
+#import xlrd as xl
+# from pandas import ExcelWriter
+# from pandas import ExcelFile
+# from xlrd import open_workbook
 from collections import defaultdict
-import xlrd
+#import xlrd
 from country_codes import country_with_codes
-from date_extractor import extract_dates
-import datefinder
+#from date_extractor import extract_dates
+#import datefinder
 import dateparser
-import moment
+#import moment
 from rotate import autorotate
 
 
@@ -95,7 +95,7 @@ def detect_text(image_file):
     #for x in text:
 
     #print(h)
-    #print ("kdfjgn:",text)
+    print ("kdfjgn:",text)
     #print(list(pycountry.countries))
     dates = extract_dates(text)
     print("date_extractor:",dates)
@@ -234,7 +234,7 @@ def detect_text(image_file):
                 date_of_birth=full+remain
         #print("date of birth:",date_of_birth)
         abc=re.findall(r'\s([0-9][0-9] [a-zA-Z]+ \d{4}|\d{2}/\d{2}/\d{4}|\d{2}.\d{2}.\d{4}|\d{2} \w+/\w+ \d{4}|\d{2} \d{2} \d{4}|\d{2}-d{2}-d{4}|\d{2} \w+ /\w+ \d{2}|\d{2} \w+ \d{2}|\d{2} \w+/\w+ \d{2}|\d{2} \w+ \w+ \d{2})',text)
-        print("date of birth:",abc)
+       # print("date of birth:",abc)
         #Date_of_issue=abc[1]
         static  = [' ','.','/','-']
 
@@ -251,9 +251,9 @@ def detect_text(image_file):
                         dates.append(x)
         res = []
         [res.append(x) for x in dates if x not in res]
-        print("datesbu:",res)
+        #print("datesbu:",res)
         parsed_issue=dateparser.parse(res[1],settings={'DATE_ORDER': 'DMY'})
-        print("parsed_issue:",parsed_issue)
+       # print("parsed_issue:",parsed_issue)
         if parsed_issue==None:
             Date_of_issue=' '
         else:
@@ -354,8 +354,8 @@ def detect_text(image_file):
         data={"type":type,"issued_country":issuingcountry,"visa_no_of_entries":entry,"sur_name":surname,"given_name":givenname,"Date_of_issue":Date_of_issue,"visa_no":visa_number,"nationality":nationality,"date_of_birth":date_of_birth,"gender":sex,"visa_expirydate":date_of_expiry}
         print("person_visa_details:",data)
         return data
-detect_text('/home/caratred/Downloads/drivers/1234.jpg')
-
+#detect_text('/home/caratred/Downloads/drivers/1234.jpg')
+detect_text('/home/raghu/Downloads/Down-Payment/Florida.pdf')
 #print("mrz data:",tuple(loss))
 """first=loss[0]
 second =loss[1]

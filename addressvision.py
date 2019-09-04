@@ -5,7 +5,8 @@ import os
 import json
 from google.cloud import vision
 from google.cloud.vision import types
-from google.protobuf.json_format import MessageToJson
+from google.protobuf.json_format import MessageToJsonManyam Raghuram pushed to branch master
+
 import re
 from werkzeug.utils import secure_filename
 import datetime
