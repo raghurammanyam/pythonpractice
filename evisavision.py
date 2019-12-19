@@ -3,11 +3,11 @@ import requests
 import io
 import os
 import json
-from google.cloud import vision
-from google.cloud.vision import types
-from google.protobuf.json_format import MessageToJson
+# from google.cloud import vision
+# from google.cloud.vision import types
+# from google.protobuf.json_format import MessageToJson
 import re
-from werkzeug.utils import secure_filename
+# from werkzeug.utils import secure_filename
 import datetime
 from datetime import date
 from PIL import Image
@@ -17,7 +17,7 @@ from os.path import join
 from collections import defaultdict,OrderedDict
 #from visaqr import qr_scan
 from id import detect_faces
-from cropaadhar import cropaddress
+# from cropaadhar import cropaddress
 from difflib import get_close_matches
 from country_codes import country_with_codes
 
@@ -61,35 +61,42 @@ def detect_text(image_file):
                 entry=matched_entries[0]
                 #print("entry:",entry)
     details = {}
-    #crop = cropaddress(image_file)
-    #details=qr_scan(crop)
-    face = detect_faces(image_file)
+    
     get=country_with_codes.values()
     get=[x.upper() for x in list(get)]
     #print(".....:",get)
-    can=[]
+    nation=[]
     for x in block:
+        if x in get:
+            print("country:",x)
         result = ''.join(i for i in x if not i.isdigit())
         matched_entries=get_close_matches(x,get)
-        print("matched_entries:",matched_entries)
+        # print("matched_entries:",matched_entries)
         if len(matched_entries)>=1:
-            can.append(matched_entries[0])
-            print("nationality:",can)
-    print(can[0])
-    bun=[]
+            nation.append(matched_entries[0])
+    nationality = ''
+    if len(nation)>0:
+        nationality=nation[0]
+    type_visa=[]
     for x in block:
         result = ''.join(i for i in x if not i.isdigit())
         matched_entries=get_close_matches(x,service)
-        #print("matched_entries:",matched_entries)
+       # print("matched_entries:",matched_entries)
+       
         if len(matched_entries)>=1:
-            bun.append(matched_entries[0])
+            type_visa.append(matched_entries[0])
+    visa_type=''
+    print(bun)
+    if len(bun)>=1:
+        visa_type =type_visa[0]
             #print("service:",bun)
     #print(bun[1])
-    details['visa_Type']=bun[1]
-    details['Nationality']=can[0]
+    details['visa_Type']=visa_type
+    details['Nationality']= nationality
     details['Visa_No_Of_Enteries']=entry
     details['Issued_country']='INDIA'
     details['Document_Type']='e-VISA'
+    
     print("details:",details)
     #return ad
-detect_text('/home/caratred/Downloads/drivers/evisa.jpg')
+detect_text('/home/raghu/Downloads/e-visa1.jpg')

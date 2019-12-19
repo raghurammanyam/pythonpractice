@@ -26,4 +26,4 @@ cv2.rectangle(img,(x,y),(x+w,y+h),(0,255,0),2)
         QR_crop = QR_orig[y:y+h,x:x+w]
         # use cropped mask image (roi) to get rid of all small pieces
         QR_final = QR_crop * (roi/255)
-cv2.imwrite('/home/caratred/QR_final.jpg',QR_final)
+cv2.imwrite('/home/raghu/QR_final.jpg',QR_final)

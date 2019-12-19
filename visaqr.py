@@ -1,11 +1,12 @@
 from PIL import Image
-from pyzbar.pyzbar import decode
+from pyzbar.pyzbar import decode,ZBarSymbol
 import re
 import xmltodict
 
 def qr_scan(img_path):
-    data = decode(Image.open(img_path))
+    data = decode(Image.open(img_path),symbols=[ZBarSymbol.QRCODE])
     #print("ksbsdjfbgjdf:",data)
+    print(data)
     qr_extracted_data=(data[0][0]).decode("utf-8")
     d=(xmltodict.parse(qr_extracted_data,process_namespaces=True))
     original=d['applicant']
@@ -55,6 +56,6 @@ def qr_scan(img_path):
             if value!='':
                 person_address.append(value)
         print("person_address:",person_address)
-qr_scan("/home/caratred/Downloads/drivers/qr.jpg")
+qr_scan("/home/raghu/Downloads/Thai National ID Card/image--011.jpg")
 
 #print(str(data))
